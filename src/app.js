@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
+const projectRoutes = require("./routes/projectRoutes");
 const testRoutes = require("./routes/test");
 const { swaggerUi, specs } = require("./swagger");
 dotenv.config();
@@ -15,6 +16,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended : true}))
 
 app.use("/api/auth",authRoutes)
+app.use("/api/projects",projectRoutes)
 app.use(testRoutes)
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs))
 

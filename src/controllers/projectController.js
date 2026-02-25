@@ -57,3 +57,11 @@ const softDeleteProject = async (req,res) => {
 }
 
 
+
+module.exports = {
+    createProject,
+    getUserProjects,
+    softDeleteProject,
+    getProjectById,
+    updateProject,
+}
