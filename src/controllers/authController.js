@@ -40,8 +40,16 @@ const register = async (req,res)=>{
 }
 
 
+const login = async (req,res)=>{
+    try {
+        
+    } catch (error) {
+        response(res,500,false,"Internal server error",error.message)
+    }
+}
+
 
 
 module.exports ={
-    register
+    register,login
 }
