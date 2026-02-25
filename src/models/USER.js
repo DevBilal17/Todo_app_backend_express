@@ -20,7 +20,6 @@ const userSchema = new mongoose.Schema({
         type:String,
         required : [true,"Password is required"],
         minlength : [6,"Password must be at least 6 characters long"],
-        maxlength : [20,"Password must be at most 20 characters long"],
         select : false
     },
     role : {
@@ -33,12 +32,12 @@ const userSchema = new mongoose.Schema({
 })
 
 
-userSchema.pre("save",async function(next){
+userSchema.pre("save",async function(){
     if(this.isModified("password")){
-        const salt = await bcrypt.genSalt(process.env.BCRYPT_SALT);
+        let genSalt = Number(process.env.BCRYPT_SALT) || 10
+        const salt = await bcrypt.genSalt(genSalt);
         this.password = await bcrypt.hash(this.password,salt);
     }
-    next();
 })
 
 userSchema.methods.comparePassword = async function(password){
