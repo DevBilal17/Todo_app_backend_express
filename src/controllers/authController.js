@@ -8,13 +8,13 @@ const register = async (req,res)=>{
         
         const errors = validationResult(req);
         if(!errors.isEmpty()){
-            response(res,400,false,errors.array()[0].msg,errors.array())
+            return response(res,400,false,errors.array()[0].msg,errors.array())
         }
         
         const {name , email,password} = req.body;
         const emailExists = await USER.findOne({email});
         if(emailExists){
-            response(res,400,false,"Email already exists")
+            return response(res,400,false,"Email already exists")
         }
 
         
@@ -27,7 +27,7 @@ const register = async (req,res)=>{
 
         user.save();
 
-        response(res,201,true,"User registered successfully",{
+        return response(res,201,true,"User registered successfully",{
             id : user._id,
             name : user.name,
             email : user.email,
@@ -35,7 +35,7 @@ const register = async (req,res)=>{
         })
         
     } catch (error) {
-        response(res,500,false,"Internal server error",error.message)
+        return response(res,500,false,"Internal server error",error.message)
     }
 }
 
@@ -44,20 +44,20 @@ const login = async (req,res)=>{
     try {
         const errors = validationResult(req);
         if(!errors.isEmpty()){
-            response(res,400,false,errors.array()[0].msg,errors.array())
+            return response(res,400,false,errors.array()[0].msg,errors.array())
         }
         
         const {email,password} = req.body;
         const user = await USER.findOne({email});
 
         if(!user){
-            response(res,400,false,"Invalid email or password")
+            return response(res,400,false,"Invalid email or password")
         }
 
         const isMatch = await user.comparePassword(password);
 
         if(!isMatch){
-            response(res,400,false,"Invalid email or password")
+            return response(res,400,false,"Invalid email or password")
         }
 
         const token = jwt.sign({
@@ -69,7 +69,7 @@ const login = async (req,res)=>{
         })
 
 
-        response(res,200,true,"Login successful",{
+        return response(res,200,true,"Login successful",{
             token,
             user : {
                 id : user._id,
@@ -80,7 +80,7 @@ const login = async (req,res)=>{
         })
 
     } catch (error) {
-        response(res,500,false,"Internal server error",error.message)
+        return response(res,500,false,"Internal server error",error.message)
     }
 }
 

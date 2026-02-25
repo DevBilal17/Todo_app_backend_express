@@ -18,13 +18,13 @@ const protect = async(req,res,next) => {
             if(error.name === "TokenExpiredError"){
                 return response(res,401,false,"Token expired - Login Again")
             }
-            response(res,401,false,"Invalid token",error.message)
+            return response(res,401,false,"Invalid token",error.message)
         }
          
     }
 
     else{
-        response(res,401,false,"No Token Provided",error.message)
+       return response(res,401,false,"No Token Provided",error.message)
     }
 }
 
